@@ -291,6 +291,11 @@ p{font-size:1.4rem;opacity:.9;line-height:1.6}
 .header-text{color:#fff;font-weight:700;font-size:1.1rem}
 .pause-badge{position:fixed;top:24px;right:24px;background:rgba(255,255,255,.2);padding:8px 16px;border-radius:20px;color:#fff;font-size:.9rem;backdrop-filter:blur(10px);z-index:100;display:none}
 .pause-badge.show{display:block}
+.controls.hidden,
+.indicators.hidden{
+  opacity:0;
+  pointer-events:none;
+}
 </style>
 <!-- Control de Audio -->
 <audio id="bgMusic" loop>
@@ -314,7 +319,53 @@ p{font-size:1.4rem;opacity:.9;line-height:1.6}
 #volumeSlider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;cursor:pointer;border:none;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .volume-label{color:#fff;font-size:.85rem;min-width:40px;font-weight:600}
 </style>
+<script>
+let hideTimeout;
+let controlsVisible = true;
 
+// Función para ocultar controles
+function hideControls(){
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const audioControl = document.getElementById('audioControl');
+  const controls = document.querySelector('.controls');
+  const indicators = document.getElementById('indicators');
+  
+  if(fullscreenBtn) fullscreenBtn.classList.add('hidden');
+  if(audioControl) audioControl.classList.add('hidden');
+  if(controls) controls.classList.add('hidden');
+  if(indicators) indicators.classList.add('hidden');
+  controlsVisible = false;
+}
+
+// Función para mostrar controles
+function showControls(){
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const audioControl = document.getElementById('audioControl');
+  const controls = document.querySelector('.controls');
+  const indicators = document.getElementById('indicators');
+  
+  if(fullscreenBtn) fullscreenBtn.classList.remove('hidden');
+  if(audioControl) audioControl.classList.remove('hidden');
+  if(controls) controls.classList.remove('hidden');
+  if(indicators) indicators.classList.remove('hidden');
+  controlsVisible = true;
+}
+
+// Función para reiniciar el temporizador
+function resetHideTimer(){
+  clearTimeout(hideTimeout);
+  showControls();
+  hideTimeout = setTimeout(hideControls, 5000);
+}
+
+// Detectar movimiento del mouse o toque
+document.addEventListener('mousemove', resetHideTimer);
+document.addEventListener('touchstart', resetHideTimer);
+document.addEventListener('click', resetHideTimer);
+
+// Iniciar el temporizador al cargar
+resetHideTimer();
+</script>
 <script>
 const audio=document.getElementById('bgMusic');
 const audioBtn=document.getElementById('audioBtn');
@@ -748,3 +799,4 @@ draw();
 </body>
 
 </html>
+
