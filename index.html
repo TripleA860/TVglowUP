@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Up Freestyle - Presentación TV</title>
+<style>
+  /* Galería con marcos diferentes */
+.gallery-frames{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(2,240px);
+  gap:2rem;
+  max-width:1200px;
+  width:100%;
+  animation:fadeIn 1s;
+}
+
+.frame{
+  position:relative;
+  overflow:hidden;
+  transition:all .4s ease;
+  cursor:pointer;
+}
+
+.frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .4s ease;
+}
+
+.frame:hover img{
+  transform:scale(1.15);
+}
+
+.frame-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.6) 100%);
+  opacity:0;
+  transition:opacity .4s;
+}
+
+.frame:hover .frame-overlay{
+  opacity:1;
+}
+
+/* Estilos específicos para cada marco */
+.frame-1{
+  grid-column:1/2;
+  grid-row:1/3;
+  border-radius:200px 24px 24px 24px;
+  box-shadow:0 15px 50px rgba(92,24,41,.4);
+  border:3px solid rgba(255,255,255,.3);
+}
+
+.frame-2{
+  grid-column:2/3;
+  grid-row:1/2;
+  border-radius:24px;
+  box-shadow:0 10px 40px rgba(0,0,0,.3);
+  border:2px solid rgba(255,255,255,.2);
+  transform:rotate(-2deg);
+}
+
+.frame-2:hover{
+  transform:rotate(0deg) scale(1.05);
+}
+
+.frame-3{
+  grid-column:3/4;
+  grid-row:1/2;
+  border-radius:50%;
+  box-shadow:0 10px 40px rgba(92,24,41,.4);
+  border:4px solid rgba(255,255,255,.25);
+}
+
+.frame-4{
+  grid-column:2/3;
+  grid-row:2/3;
+  border-radius:24px 24px 200px 24px;
+  box-shadow:0 10px 40px rgba(0,0,0,.3);
+  border:3px solid rgba(255,255,255,.2);
+}
+
+.frame-5{
+  grid-column:3/4;
+  grid-row:2/3;
+  border-radius:24px;
+  box-shadow:0 10px 40px rgba(92,24,41,.4);
+  border:2px solid rgba(255,255,255,.2);
+  transform:rotate(2deg);
+}
+
+.frame-5:hover{
+  transform:rotate(0deg) scale(1.05);
+}
+
+/* Sección QR y Web */
+.qr-section{
+  max-width:1100px;
+  width:100%;
+}
+
+.qr-content{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:4rem;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(15px);
+  border:2px solid rgba(255,255,255,.2);
+  border-radius:32px;
+  padding:3rem;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+
+.qr-text{
+  flex:1;
+  text-align:left;
+}
+
+.qr-icon{
+  font-size:4rem;
+  margin-bottom:1rem;
+  animation:pulse 2s infinite;
+}
+
+.qr-text h3{
+  font-size:2rem;
+  color:#f8d7da;
+  margin-bottom:1rem;
+  line-height:1.3;
+}
+
+.qr-text p{
+  font-size:1.3rem;
+  opacity:.85;
+  margin-bottom:2rem;
+}
+
+.web-features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.8rem;
+}
+
+.feature-item{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  font-size:1.1rem;
+  padding:.5rem;
+  background:rgba(255,255,255,.05);
+  border-radius:12px;
+}
+
+.feature-item span{
+  color:#5c1829;
+  font-weight:800;
+  font-size:1.3rem;
+}
+
+.qr-container{
+  flex-shrink:0;
+  text-align:center;
+}
+
+.qr-frame{
+  width:280px;
+  height:280px;
+  background:#fff;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 15px 50px rgba(0,0,0,.4);
+  margin-bottom:1rem;
+  position:relative;
+  overflow:hidden;
+}
+
+.qr-frame::before{
+  content:'';
+  position:absolute;
+  inset:-2px;
+  background:linear-gradient(45deg,#5c1829,#f8d7da,#5c1829);
+  border-radius:24px;
+  z-index:-1;
+  animation:rotate 3s linear infinite;
+}
+
+@keyframes rotate{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+
+.qr-frame img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:12px;
+}
+
+.qr-placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#f5f5f5,#e0e0e0);
+  border-radius:12px;
+}
+
+.qr-placeholder span{
+  font-size:4rem;
+  margin-bottom:.5rem;
+}
+
+.qr-placeholder p{
+  font-size:1rem;
+  color:#666;
+  font-weight:600;
+}
+
+.qr-caption{
+  font-size:1.1rem;
+  font-weight:600;
+  color:#f8d7da;
+  opacity:.9;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;overflow:hidden;background:linear-gradient(135deg,#5c1829 0%,#3d1018 50%,#000 100%);height:100vh}
+#canvas{position:fixed;top:0;left:0;z-index:0}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;padding:40px;opacity:0;transform:translateX(100px);transition:all .9s ease;z-index:1;pointer-events:none}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.slide.exit-left{opacity:0;transform:translateX(-100px)}
+h1{font-size:5rem;font-weight:800;text-shadow:0 4px 30px rgba(92,24,41,.8);margin-bottom:.5rem}
+h2{font-size:3rem;font-weight:700;margin-bottom:2rem}
+h3{font-size:2rem;color:#f8d7da;margin-bottom:.5rem}
+p{font-size:1.4rem;opacity:.9;line-height:1.6}
+.subtitle{font-size:2rem;font-weight:300;opacity:.9}
+.tagline{font-size:1.5rem;font-style:italic;opacity:.8;margin-top:1rem}
+.logo-circle{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#5c1829,#000);display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin-bottom:2rem;box-shadow:0 10px 40px rgba(0,0,0,.5);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.divider{width:100px;height:4px;background:linear-gradient(90deg,transparent,#5c1829,transparent);margin:1.5rem 0}
+.cards{display:flex;gap:2rem;max-width:1400px;width:100%}
+.card{flex:1;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:1.5rem;text-align:center;transition:transform .3s;overflow:hidden}
+.card:hover{transform:translateY(-10px)}
+.card-image{width:100%;height:180px;border-radius:16px;object-fit:cover;margin-bottom:1rem;box-shadow:0 5px 20px rgba(0,0,0,.3)}
+.card-icon{font-size:3rem;margin-bottom:1rem}
+.card h3{color:#f8d7da;font-size:1.4rem;margin-bottom:1rem}
+.card ul{list-style:none;text-align:left;font-size:1rem;max-height:180px;overflow:hidden}
+.card li{padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.95rem}
+.card li:last-child{border:none}
+.profile{width:150px;height:150px;border-radius:50%;overflow:hidden;margin-bottom:1.5rem;box-shadow:0 15px 50px rgba(0,0,0,.4);border:4px solid rgba(255,255,255,.2)}
+.profile img{width:100%;height:100%;object-fit:cover}
+.info-grid{display:flex;gap:3rem;align-items:center;max-width:1100px}
+.info-left{flex:1;text-align:left}
+.info-right{flex:1;border-radius:24px;overflow:hidden}
+.info-right img{width:100%;height:auto;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.info-item{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;font-size:1.3rem}
+.info-item span:first-child{font-size:2rem}
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:700px;margin-bottom:2rem}
+.social-card{background:rgba(255,255,255,.1);border-radius:16px;padding:1.2rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(255,255,255,.15)}
+.social-card span:first-child{font-size:2.5rem}
+.whatsapp-btn{background:#25D366;border-radius:50px;padding:1rem 2.5rem;display:flex;align-items:center;gap:1rem;font-size:1.4rem;font-weight:600;box-shadow:0 10px 30px rgba(37,211,102,.4)}
+.gallery-collage{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,180px);gap:1rem;max-width:1300px;width:100%;animation:fadeIn 1s}
+@keyframes fadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.gallery-item{border-radius:16px;overflow:hidden;position:relative;box-shadow:0 5px 20px rgba(0,0,0,.3);transition:transform .3s}
+.gallery-item:hover{transform:scale(1.05);z-index:10}
+.gallery-item img{width:100%;height:100%;object-fit:cover}
+.gallery-item:nth-child(1){grid-column:1/3;grid-row:1/3}
+.gallery-item:nth-child(2){grid-column:3/4;grid-row:1/2}
+.gallery-item:nth-child(3){grid-column:4/5;grid-row:1/2}
+.gallery-item:nth-child(4){grid-column:3/5;grid-row:2/4}
+.gallery-item:nth-child(5){grid-column:1/2;grid-row:3/4}
+.gallery-item:nth-child(6){grid-column:2/3;grid-row:3/4}
+.controls{position:fixed;bottom:24px;right:24px;display:flex;align-items:center;gap:12px;z-index:100}
+.ctrl-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:1.2rem;cursor:pointer;transition:all .2s;backdrop-filter:blur(10px)}
+.ctrl-btn:hover{background:rgba(255,255,255,.3);transform:scale(1.1)}
+.ctrl-btn.play{width:52px;height:52px;font-size:1.4rem}
+.time{color:rgba(255,255,255,.6);font-size:.9rem;margin-right:8px}
+.indicators{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100}
+.dot{width:12px;height:12px;border-radius:6px;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s}
+.dot.active{width:32px;background:#fff}
+.progress-bar{position:fixed;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.2);z-index:100}
+.progress-fill{height:100%;background:rgba(255,255,255,.8);transition:width .1s linear}
+.header{position:fixed;top:24px;left:24px;display:flex;align-items:center;gap:12px;z-index:100}
+.header-logo{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#5c1829,#000);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.header-text{color:#fff;font-weight:700;font-size:1.1rem}
+.pause-badge{position:fixed;top:24px;right:24px;background:rgba(255,255,255,.2);padding:8px 16px;border-radius:20px;color:#fff;font-size:.9rem;backdrop-filter:blur(10px);z-index:100;display:none}
+.pause-badge.show{display:block}
+</style>
+<!-- Control de Audio -->
+<audio id="bgMusic" loop>
+  <source src="audiofondo.mp3" type="audio/mpeg">
+</audio>
+
+<div class="audio-control" id="audioControl">
+  <button class="audio-btn" id="audioBtn" onclick="toggleAudio()">
+    <span id="audioIcon">🔇</span>
+  </button>
+  <input type="range" id="volumeSlider" min="0" max="100" value="50" oninput="changeVolume(this.value)">
+  <span class="volume-label" id="volumeLabel">50%</span>
+</div>
+
+<style>
+.audio-control{position:fixed;top:24px;right:100px;display:flex;align-items:center;gap:12px;z-index:100;background:rgba(255,255,255,.15);padding:8px 16px;border-radius:30px;backdrop-filter:blur(10px)}
+.audio-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:1.3rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.audio-btn:hover{background:rgba(255,255,255,.3);transform:scale(1.1)}
+#volumeSlider{width:100px;height:6px;border-radius:3px;background:rgba(255,255,255,.3);outline:none;cursor:pointer;-webkit-appearance:none}
+#volumeSlider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+#volumeSlider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;cursor:pointer;border:none;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.volume-label{color:#fff;font-size:.85rem;min-width:40px;font-weight:600}
+</style>
+
+<script>
+const audio=document.getElementById('bgMusic');
+const audioBtn=document.getElementById('audioBtn');
+const audioIcon=document.getElementById('audioIcon');
+const volumeSlider=document.getElementById('volumeSlider');
+const volumeLabel=document.getElementById('volumeLabel');
+
+let isPlaying=false;
+audio.volume=0.5;
+
+function toggleAudio(){
+  if(isPlaying){
+    audio.pause();
+    audioIcon.textContent='🔇';
+    isPlaying=false;
+  }else{
+    audio.play().catch(e=>console.log('Audio bloqueado por el navegador'));
+    audioIcon.textContent='🔊';
+    isPlaying=true;
+  }
+}
+
+function changeVolume(val){
+  audio.volume=val/100;
+  volumeLabel.textContent=val+'%';
+  if(val==0){
+    audioIcon.textContent='🔇';
+  }else if(val<50){
+    audioIcon.textContent='🔉';
+  }else{
+    audioIcon.textContent='🔊';
+  }
+}
+
+// Auto-play al hacer clic en cualquier lado (algunos navegadores bloquean autoplay)
+document.addEventListener('click',function initAudio(){
+  if(!isPlaying){
+    audio.play().then(()=>{
+      isPlaying=true;
+      audioIcon.textContent='🔊';
+    }).catch(()=>{});
+  }
+  document.removeEventListener('click',initAudio);
+},{once:true});
+</script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<div class="header">
+  <div class="header-logo">
+  <img src="img/logofreeglowup.png" alt="Logo" style="width:100%;height:100%;object-fit:contain;border-radius:50%">
+</div>
+  <span class="header-text">Glow Up Freestyle</span>
+</div>
+
+<div class="pause-badge" id="pauseBadge">⏸ PAUSADO</div>
+
+<!-- Slide 1: Hero -->
+<div class="slide active" data-slide="0">
+  <div class="logo-circle">
+  <img src="img/logofreeglowup.png" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+</div>
+  <h1>GLOW UP</h1>
+  <p class="subtitle">FREESTYLE</p>
+  <div class="divider"></div>
+  <p class="tagline">El cambio que buscás</p>
+</div>
+
+<!-- Slide 2: Servicios con fotos -->
+<div class="slide" data-slide="1">
+  <h2>Nuestros Servicios</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="img/estetica/1.webp" alt="Estética" class="card-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-icon" style="display:none">✨</div>
+      <h3>Estética</h3>
+      <ul><li>HIFU</li><li>Lifting facial</li><li>Limpieza facial</li><li>Pestañas</li><li>Cejas</li><li>Manos y Pies</li></ul>
+    </div>
+    <div class="card">
+      <img src="img/barber/2.jpg" alt="Barbería" class="card-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-icon" style="display:none">✂️</div>
+      <h3>Barbería</h3>
+      <ul><li>Corte y Peinado</li><li>Platinados</li><li>Diseño de pelo</li><li>Diseño de barba</li><li>Detalles freestyle</li></ul>
+    </div>
+    <div class="card">
+      <img src="img/peluqueria/3.png" alt="Peluquería" class="card-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-icon" style="display:none">💇‍♀️</div>
+      <h3>Peluquería</h3>
+      <ul><li>Balayage</li><li>Coloración</li><li>Claritos</li><li>Progresivo Orgánico</li><li>Extensiones</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Más Servicios con fotos -->
+<div class="slide" data-slide="2">
+  <h2>Más Servicios</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="img/uñas/uñas1.jpg" alt="Uñas" class="card-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-icon" style="display:none">💅</div>
+      <h3>Uñas</h3>
+      <ul><li>Semipermanente</li><li>Acrílicas</li><li>Diseños exclusivos</li><li>Nail art</li><li>Manicura</li></ul>
+    </div>
+    <div class="card">
+      <img src="img/estetica/podologia.png" alt="Podología" class="card-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-icon" style="display:none">👣</div>
+      <h3>Podología</h3>
+      <ul><li>Tratamiento de callos</li><li>Tratamiento de uñas</li><li>Pie diabético</li><li>Reflexología podal</li><li>Pedicura médica</li></ul>
+    </div>
+    <div class="card">
+      <img src="img/estetica/depilacion-laser-efectiva.jpg" alt="Depilación" class="card-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-icon" style="display:none">🌟</div>
+      <h3>Depilación</h3>
+      <ul><li>Facial</li><li>Cejas y labio</li><li>Axilas</li><li>Piernas completas</li><li>Brazos y Bikini</li></ul>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Galería Collage -->
+<div class="slide" data-slide="3">
+  <h2>Nuestro Trabajo</h2>
+  <p style="opacity:.8;margin-bottom:2rem">Galería de transformaciones</p>
+  <div class="gallery-collage">
+    <div class="gallery-item"><img src="img/peluqueria/2.webp" alt="Trabajo 1" onerror="this.src='img/fondo.jpg'"></div>
+    <div class="gallery-item"><img src="img/barber/3.jpg" alt="Trabajo 2" onerror="this.src='img/fondo1.jpg'"></div>
+    <div class="gallery-item"><img src="img/peluqueria/3.png" alt="Trabajo 3" onerror="this.src='img/fondo2.jpg'"></div>
+    <div class="gallery-item"><img src="img/uñas/uñas2.jpg" alt="Trabajo 4" onerror="this.src='img/fondo4.jpg'"></div>
+    <div class="gallery-item"><img src="img/barber/5.jpg" alt="Trabajo 5" onerror="this.src='img/fondo.jpg'"></div>
+    <div class="gallery-item"><img src="img/peluqueria/5.jpg" alt="Trabajo 6" onerror="this.src='img/fondo1.jpg'"></div>
+  </div>
+</div>
+<!-- Slide 4.5: Segunda Galería con marcos diferentes (después de la galería collage) -->
+<div class="slide" data-slide="4">
+  <h2>Más Transformaciones</h2>
+  <p style="opacity:.8;margin-bottom:2rem">Resultados que hablan por sí solos</p>
+  <div class="gallery-frames">
+    <div class="frame frame-1">
+      <img src="img/barber/2.jpg" alt="Transformación 1" onerror="this.src='img/fondo.jpg'">
+      <div class="frame-overlay"></div>
+    </div>
+    <div class="frame frame-2">
+      <img src="img/peluqueria/6.jpeg" alt="Transformación 2" onerror="this.src='img/fondo1.jpg'">
+      <div class="frame-overlay"></div>
+    </div>
+    <div class="frame frame-3">
+      <img src="img/barber/1.jpg" alt="Transformación 3" onerror="this.src='img/fondo2.jpg'">
+      <div class="frame-overlay"></div>
+    </div>
+    <div class="frame frame-4">
+      <img src="img/estetica/2.webp" alt="Transformación 4" onerror="this.src='img/fondo4.jpg'">
+      <div class="frame-overlay"></div>
+    </div>
+    <div class="frame frame-5">
+      <img src="img/barber/Corte+Mech.jpg" alt="Transformación 5" onerror="this.src='img/fondo.jpg'">
+      <div class="frame-overlay"></div>
+    </div>
+  </div>
+</div>
+<!-- Slide 5: Nosotros -->
+<div class="slide" data-slide="4">
+  <h2>Sobre Nosotros</h2>
+  <div class="profile">
+    <img src="img/clienta.jpg" alt="Adriana Fernandez" onerror="this.parentElement.innerHTML='👩‍💼'">
+  </div>
+  <h3>Adriana Fernandez</h3>
+  <p style="opacity:.7;margin-bottom:1.5rem">Fundadora & Estilista Principal</p>
+  <p style="max-width:800px;text-align:center">Más de <strong style="color:#f8d7da">15 años de experiencia</strong> combinando las últimas tendencias, productos profesionales y atención personalizada para tu transformación.</p>
+</div>
+
+<!-- Slide 6: Ubicación -->
+<div class="slide" data-slide="5">
+  <h2>Visitanos</h2>
+  <div class="info-grid">
+    <div class="info-left">
+      <div class="info-item"><span>📍</span> Av. Agraciada 4040, Montevideo</div>
+      <div class="info-item"><span>📞</span> +598 94 064 001</div>
+      <div class="info-item"><span>✉️</span> Fati.vida1983@gmail.com</div>
+      <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.2)">
+        <h3 style="margin-bottom:1rem">Horarios</h3>
+        <p>Martes - Sábado: 10:00 - 18:00</p>
+        <p style="opacity:.7;font-size:1.1rem">Los dos primeros Lunes: 14:00 - 19:00</p>
+      </div>
+    </div>
+    <div class="info-right">
+      <img src="img/direccion.png" alt="Mapa de ubicación" onerror="this.parentElement.innerHTML='<div style=\'background:rgba(255,255,255,.1);padding:3rem;border-radius:24px;text-align:center\'><span style=\'font-size:5rem;display:block;margin-bottom:1rem\'>🗺️</span><p style=\'font-size:1.4rem;font-weight:600\'>Fácil acceso</p><p style=\'opacity:.7\'>y estacionamiento disponible</p></div>'">
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6.5: Invitación a la Web con QR (antes de redes sociales) -->
+<div class="slide" data-slide="6">
+  <h2>Visitá Nuestra Web</h2>
+  <div class="qr-section">
+    <div class="qr-content">
+      <div class="qr-text">
+        <div class="qr-icon">🌐</div>
+        <h3>Para ver nuestros servicios de forma más específica</h3>
+        <p>Escaneá el código QR o visitá nuestra página web</p>
+        <div class="web-features">
+          <div class="feature-item"><span>✓</span> Precios actualizados</div>
+          <div class="feature-item"><span>✓</span> Promociones exclusivas</div>
+          <div class="feature-item"><span>✓</span> Galería completa</div>
+          <div class="feature-item"><span>✓</span> Reserva online</div>
+        </div>
+      </div>
+      <div class="qr-container">
+        <div class="qr-frame">
+          <img src="img/WEB GLOW UP .png" alt="Código QR" onerror="this.parentElement.innerHTML='<div class=\'qr-placeholder\'><span>📱</span><p>Código QR</p></div>'">
+        </div>
+        <p class="qr-caption">Escaneá para acceder</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Contacto -->
+<div class="slide" data-slide="6">
+  <h2>¡Seguinos!</h2>
+  <p style="margin-bottom:2rem;opacity:.8">Encontranos en redes sociales</p>
+  <div class="social-grid">
+    <div class="social-card"><span>📘</span><div><strong>Facebook</strong><br><span style="opacity:.8">@adriana.denievas</span></div></div>
+    <div class="social-card"><span>📸</span><div><strong>Instagram</strong><br><span style="opacity:.8">@freestyleglowup</span></div></div>
+    <div class="social-card"><span>🎵</span><div><strong>TikTok</strong><br><span style="opacity:.8">@glow.up.freestyle</span></div></div>
+    <div class="social-card"><span>💬</span><div><strong>WhatsApp</strong><br><span style="opacity:.8">+598 94 064 001</span></div></div>
+  </div>
+  <div class="whatsapp-btn"><span>📱</span> Reservá tu cita por WhatsApp</div>
+  <p class="tagline" style="margin-top:2rem">"Tu estilo, nuestra pasión"</p>
+</div>
+
+<div class="indicators" id="indicators"></div>
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<div class="controls">
+  <span class="time" id="time">105s</span>
+  <button class="ctrl-btn" onclick="prev()">◀</button>
+  <button class="ctrl-btn play" id="playBtn" onclick="togglePause()">⏸</button>
+  <button class="ctrl-btn" onclick="next()">▶</button>
+</div>
+<!-- Botón de Pantalla Completa -->
+<button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
+  <span id="fullscreenIcon">⛶</span>
+</button>
+
+<style>
+.fullscreen-btn{
+  position:fixed;
+  top:24px;
+  right:100px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:rgba(255,255,255,.2);
+  border:none;
+  color:#fff;
+  font-size:1.5rem;
+  cursor:pointer;
+  transition:all .3s ease;
+  backdrop-filter:blur(10px);
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:1;
+}
+.fullscreen-btn:hover{
+  background:rgba(255,255,255,.3);
+  transform:scale(1.1);
+}
+.fullscreen-btn.hidden,
+.audio-control.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+</style>
+
+<script>
+let hideTimeout;
+let controlsVisible = true;
+
+// Función para pantalla completa
+function toggleFullscreen(){
+  const elem=document.documentElement;
+  const icon=document.getElementById('fullscreenIcon');
+  
+  if(!document.fullscreenElement){
+    if(elem.requestFullscreen){
+      elem.requestFullscreen();
+    }else if(elem.webkitRequestFullscreen){
+      elem.webkitRequestFullscreen();
+    }else if(elem.msRequestFullscreen){
+      elem.msRequestFullscreen();
+    }
+  }else{
+    if(document.exitFullscreen){
+      document.exitFullscreen();
+    }else if(document.webkitExitFullscreen){
+      document.webkitExitFullscreen();
+    }else if(document.msExitFullscreen){
+      document.msExitFullscreen();
+    }
+  }
+  resetHideTimer();
+}
+
+// Función para ocultar controles
+function hideControls(){
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const audioControl = document.getElementById('audioControl');
+  if(fullscreenBtn) fullscreenBtn.classList.add('hidden');
+  if(audioControl) audioControl.classList.add('hidden');
+  controlsVisible = false;
+}
+
+// Función para mostrar controles
+function showControls(){
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const audioControl = document.getElementById('audioControl');
+  if(fullscreenBtn) fullscreenBtn.classList.remove('hidden');
+  if(audioControl) audioControl.classList.remove('hidden');
+  controlsVisible = true;
+}
+
+// Función para reiniciar el temporizador
+function resetHideTimer(){
+  clearTimeout(hideTimeout);
+  showControls();
+  hideTimeout = setTimeout(hideControls, 5000);
+}
+
+// Detectar movimiento del mouse o toque
+document.addEventListener('mousemove', resetHideTimer);
+document.addEventListener('touchstart', resetHideTimer);
+document.addEventListener('click', resetHideTimer);
+
+// Iniciar el temporizador al cargar
+resetHideTimer();
+</script>
+<script>
+const DURATION=15000,TOTAL=9;
+let current=0,paused=false,progress=0;
+const slides=document.querySelectorAll('.slide');
+const progressBar=document.getElementById('progress');
+const timeEl=document.getElementById('time');
+const playBtn=document.getElementById('playBtn');
+const pauseBadge=document.getElementById('pauseBadge');
+const indicatorsEl=document.getElementById('indicators');
+
+for(let i=0;i<TOTAL;i++){
+  const dot=document.createElement('div');
+  dot.className='dot'+(i===0?' active':'');
+  dot.onclick=()=>goTo(i);
+  indicatorsEl.appendChild(dot);
+}
+const dots=document.querySelectorAll('.dot');
+
+function updateIndicators(){
+  dots.forEach((d,i)=>d.classList.toggle('active',i===current));
+}
+
+function goTo(i){
+  if(i===current)return;
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit-left');
+  setTimeout(()=>slides[current].classList.remove('exit-left'),700);
+  current=i;
+  slides[current].classList.add('active');
+  progress=0;
+  updateIndicators();
+}
+
+function next(){goTo((current+1)%TOTAL)}
+function prev(){goTo((current-1+TOTAL)%TOTAL)}
+
+function togglePause(){
+  paused=!paused;
+  playBtn.textContent=paused?'▶':'⏸';
+  pauseBadge.classList.toggle('show',paused);
+}
+
+function updateTime(){
+  const remaining=Math.ceil((TOTAL*DURATION-(current*DURATION+progress*DURATION/100))/1000);
+  timeEl.textContent=remaining+'s';
+}
+
+function tick(){
+  if(paused)return;
+  progress+=100/(DURATION/100);
+  if(progress>=100){progress=0;next()}
+  progressBar.style.width=progress+'%';
+  updateTime();
+}
+
+setInterval(tick,100);
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')next();
+  else if(e.key==='ArrowLeft')prev();
+  else if(e.key===' '){e.preventDefault();togglePause()}
+});
+
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+let particles=[];
+
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();
+addEventListener('resize',resize);
+
+for(let i=0;i<50;i++){
+  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,s:Math.random()*2+1,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4,o:Math.random()*.3+.1});
+}
+
+function draw(){
+  ctx.fillStyle='rgba(0,0,0,.04)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.dx;p.y+=p.dy;
+    if(p.x<0)p.x=canvas.width;
+    if(p.x>canvas.width)p.x=0;
+    if(p.y<0)p.y=canvas.height;
+    if(p.y>canvas.height)p.y=0;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.s,0,Math.PI*2);
+    ctx.fillStyle=`rgba(92,24,41,${p.o})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
