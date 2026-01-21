@@ -297,25 +297,34 @@ p{font-size:1.4rem;opacity:.9;line-height:1.6}
   pointer-events:none;
 }
 
-.spotify-bg {
-  position: fixed;
-  bottom: 15px;
-  right: 15px;
-  z-index: 9999;
+.spotify-bg{
+  position:fixed;
+  bottom:15px;
+  left:15px;          /* IZQUIERDA */
+  z-index:500;        /* menor que los controles */
+  opacity:.9;
+}
+.spotify-bg iframe{
+  pointer-events:auto;
+}
+.hidden{
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s;
 }
 
 </style>
-<!-- Spotify Playlist de fondo -->
-<div class="spotify-bg">
-  <iframe style="border-radius:12px"
-    src="https://open.spotify.com/playlist/4Q5vPuQHe6W7o14iMBFcDF?si=Ne3LF9sjRCCw9SY2H8c3tQ&pi=DNy5LzAPQ_Ohd"
+<div class="spotify-bg" id="spotify">
+  <iframe
+    src="https://open.spotify.com/embed/playlist/4Q5vPuQHe6W7o14iMBFcDF"
     width="300"
     height="80"
-    frameBorder="0"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    frameborder="0"
+    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
     loading="lazy">
   </iframe>
 </div>
+
 
 
 <style>
