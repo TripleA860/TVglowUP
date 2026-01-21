@@ -339,33 +339,40 @@ p{font-size:1.4rem;opacity:.9;line-height:1.6}
 <script>
 
 
-// Función para ocultar controles
+let hideTimeout;
+let controlsVisible=true;
+
 function hideControls(){
-  const fullscreenBtn = document.getElementById('fullscreenBtn');
-  const audioControl = document.getElementById('audioControl');
-  const controls = document.querySelector('.controls');
-  const indicators = document.getElementById('indicators');
-  
-  if(fullscreenBtn) fullscreenBtn.classList.add('hidden');
-  if(audioControl) audioControl.classList.add('hidden');
-  if(controls) controls.classList.add('hidden');
-  if(indicators) indicators.classList.add('hidden');
-  controlsVisible = false;
+  document.getElementById('fullscreenBtn')?.classList.add('hidden');
+  document.getElementById('audioControl')?.classList.add('hidden');
+  document.querySelector('.controls')?.classList.add('hidden');
+  document.getElementById('indicators')?.classList.add('hidden');
+  document.getElementById('spotify')?.classList.add('hidden'); // spotify también
+  controlsVisible=false;
 }
 
-// Función para mostrar controles
 function showControls(){
-  const fullscreenBtn = document.getElementById('fullscreenBtn');
-  const audioControl = document.getElementById('audioControl');
-  const controls = document.querySelector('.controls');
-  const indicators = document.getElementById('indicators');
-  
-  if(fullscreenBtn) fullscreenBtn.classList.remove('hidden');
-  if(audioControl) audioControl.classList.remove('hidden');
-  if(controls) controls.classList.remove('hidden');
-  if(indicators) indicators.classList.remove('hidden');
-  controlsVisible = true;
+  document.getElementById('fullscreenBtn')?.classList.remove('hidden');
+  document.getElementById('audioControl')?.classList.remove('hidden');
+  document.querySelector('.controls')?.classList.remove('hidden');
+  document.getElementById('indicators')?.classList.remove('hidden');
+  document.getElementById('spotify')?.classList.remove('hidden');
+  controlsVisible=true;
 }
+
+function resetHideTimer(){
+  clearTimeout(hideTimeout);
+  showControls();
+  hideTimeout=setTimeout(hideControls,5000);
+}
+
+['mousemove','click','touchstart'].forEach(e=>{
+  document.addEventListener(e,resetHideTimer);
+});
+
+resetHideTimer();
+
+
 
 // Función para reiniciar el temporizador
 function resetHideTimer(){
@@ -815,5 +822,6 @@ draw();
 </body>
 
 </html>
+
 
 
