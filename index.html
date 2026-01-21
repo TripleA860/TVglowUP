@@ -296,19 +296,27 @@ p{font-size:1.4rem;opacity:.9;line-height:1.6}
   opacity:0;
   pointer-events:none;
 }
-</style>
-<!-- Control de Audio -->
-<audio id="bgMusic" loop>
-  <source src="audiofondo.mp3" type="audio/mpeg">
-</audio>
 
-<div class="audio-control" id="audioControl">
-  <button class="audio-btn" id="audioBtn" onclick="toggleAudio()">
-    <span id="audioIcon">🔇</span>
-  </button>
-  <input type="range" id="volumeSlider" min="0" max="100" value="50" oninput="changeVolume(this.value)">
-  <span class="volume-label" id="volumeLabel">50%</span>
+.spotify-bg {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  z-index: 9999;
+}
+
+</style>
+<!-- Spotify Playlist de fondo -->
+<div class="spotify-bg">
+  <iframe style="border-radius:12px"
+    src="https://open.spotify.com/playlist/4Q5vPuQHe6W7o14iMBFcDF?si=Ne3LF9sjRCCw9SY2H8c3tQ&pi=DNy5LzAPQ_Ohd"
+    width="300"
+    height="80"
+    frameBorder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy">
+  </iframe>
 </div>
+
 
 <style>
 .audio-control{position:fixed;top:24px;right:100px;display:flex;align-items:center;gap:12px;z-index:100;background:rgba(255,255,255,.15);padding:8px 16px;border-radius:30px;backdrop-filter:blur(10px)}
